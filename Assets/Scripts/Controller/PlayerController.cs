@@ -37,7 +37,7 @@ public class PlayerController : NetworkBehaviour
             _input.enabled = false;
         }
 
-        SplineController vine = Instantiate(_vinePrefab, transform.position, transform.rotation);
+        SplineController vine = Instantiate(_vinePrefab);
         vine.VineEnd = transform;
     }
 
@@ -58,9 +58,8 @@ public class PlayerController : NetworkBehaviour
 
     private void SetupCamVector()
     {
-        _camForward = Camera.main.transform.forward;
+        _camForward = Camera.main.transform.up;
         _camRight = Camera.main.transform.right;
-        _camForward.y = 0;
         _camRight.y = 0;
         _camForward.Normalize();
         _camRight.Normalize(); 

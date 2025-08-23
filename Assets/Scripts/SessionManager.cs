@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using Unity.Netcode;
 using UnityEngine;
@@ -5,27 +7,25 @@ using UnityEngine;
 public class SessionManager : MonoBehaviour
 {
     [SerializeField, BoxGroup("References")] private GameObject _playerPrefab;
-    [SerializeField, BoxGroup("References")] private SpawnPos[] _spawnPositions = new SpawnPos[4];
-    void Awake()
+    [field: SerializeField, BoxGroup("References")] private Transform[] _spawnPositions = new Transform[4];
+    [SerializeField, BoxGroup("Debug"), ReadOnly] private List<Transform> _availableSpawnPoints = new List<Transform>();
+    void Start()
     {
-        NetworkManager.Singleton.NetworkConfig.AutoSpawnPlayerPrefabClientSide = false;
+        NetworkManager.Singleton.OnClientConnectedCallback += StartSession;
+        _availableSpawnPoints = _spawnPositions.ToList();
     }
 
     private void OnEnable()
     {
-        NetworkManager.Singleton.OnClientConnectedCallback += StartSession;
+
     }
 
     private void OnDisable()
     {
-        NetworkManager.Singleton.OnClientConnectedCallback -= StartSession;
+        if (NetworkManager.Singleton != null)
+            NetworkManager.Singleton.OnClientConnectedCallback -= StartSession;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
@@ -42,6 +42,17 @@ public class SessionManager : MonoBehaviour
 
     private void StartSession(ulong clientId)
     {
-        
+        NetworkObject player = Instantiate(_playerPrefab, GetAvailableSpawnPoint().position, GetAvailableSpawnPoint().rotation).GetComponent<NetworkObject>();
+
+        player.SpawnAsPlayerObject(clientId);
+    }
+
+    private Transform GetAvailableSpawnPoint()
+    {
+        int index = Random.Range(0, _availableSpawnPoints.Count);
+        Transform spawnPoint = _availableSpawnPoints[index];
+        _availableSpawnPoints.Remove(spawnPoint);
+        return spawnPoint;
+
     }
 }
