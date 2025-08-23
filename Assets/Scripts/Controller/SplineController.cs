@@ -7,10 +7,10 @@ using UnityEngine.Splines;
 public class SplineController : MonoBehaviour
 {
     [SerializeField, BoxGroup("References")] private SplineContainer _container;
-    [SerializeField, BoxGroup("References")] public Transform VineEnd;
+    [SerializeField, BoxGroup("References")] public Transform VinePlayer;
     [SerializeField, BoxGroup("Settings")] private float _distanceBeforeSplit = 2;
     [SerializeField, ReadOnly] private float3 _lastKnotSpawned = float3.zero;
-    [SerializeField, ReadOnly] private float3 _vineEndPos => VineEnd != null ? VineEnd.position : Vector3.zero;
+    [SerializeField, ReadOnly] private float3 _vineEndPos => VinePlayer != null ? VinePlayer.position : Vector3.zero;
 
     void OnValidate()
     {
