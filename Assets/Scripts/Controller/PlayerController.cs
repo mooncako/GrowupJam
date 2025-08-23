@@ -34,6 +34,7 @@ public class PlayerController : NetworkBehaviour
     private void Start()
     {
         SetupEnergy();
+        StartCoroutine(EnergyGainCO());
     }
 
     private void OnEnable()
@@ -104,16 +105,16 @@ public class PlayerController : NetworkBehaviour
         Stats.EnergyRecoverRate = 0;
     }
 
+    [Button]
     public void OnReceiveSunlight()
     {
         _sunlightSpotAmount++;
-        Stats.EnergyRecoverRate += _recoveryRateIncrementCurve.Evaluate(_sunlightSpotAmount);
+        Stats.EnergyRecoverRate = _recoveryRateIncrementCurve.Evaluate(_sunlightSpotAmount);
     }
 
     [Button]
     private void OnGameStart()
     {
-        StartCoroutine(EnergyGainCO());
         SetupEnergy();
         _canMove = true;
     }

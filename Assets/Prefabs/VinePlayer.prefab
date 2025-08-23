@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8457607741954760193}
   - component: {fileID: 4616459978234744640}
   - component: {fileID: 4707399231087189050}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VinePlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,7 @@ MonoBehaviour:
   _vinePrefab: {fileID: 6440643816318497907, guid: 4d70fce08154a184893f3dc8c81b51fd, type: 3}
   _speed: 0.2
   Stats:
-    <MaxEnergy>k__BackingField: 100
+    <MaxEnergy>k__BackingField: 50
     Energy: 0
     EnergyRecoverRate: 0
   _sunlightSpotAmount: 0
@@ -220,6 +220,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _canMove: 0
   _moveInput: {x: 0, y: 0}
   _moveDir: {x: 0, y: 0, z: 0}
 --- !u!114 &4707399231087189050

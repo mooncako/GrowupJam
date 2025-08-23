@@ -27,7 +27,7 @@ public class SessionManager : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    // Test 
     void Update()
     {
         if (Input.GetKey(KeyCode.Alpha0))
