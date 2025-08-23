@@ -16,9 +16,10 @@ public class PlayerController : NetworkBehaviour
     [SerializeField, BoxGroup("Settings")] public Stats Stats;
     [SerializeField, BoxGroup("Settings")] private int _sunlightSpotAmount = 0;
     [SerializeField, BoxGroup("Settings")] private AnimationCurve _recoveryRateIncrementCurve;
+    [SerializeField, BoxGroup("Debug"), ReadOnly] private bool _canMove = false;
     [SerializeField, BoxGroup("Debug"), ReadOnly] private Vector2 _moveInput;
     [SerializeField, BoxGroup("Debug"), ReadOnly] private Vector3 _moveDir;
-    
+
     private WaitForSeconds _waitForSeconds = new WaitForSeconds(1);
 
     private Vector3 _camForward;
@@ -32,8 +33,17 @@ public class PlayerController : NetworkBehaviour
 
     private void Start()
     {
-        SetupCamVector();
         SetupEnergy();
+    }
+
+    private void OnEnable()
+    {
+        EventHub.Instance.OnGameStart.AddListener(OnGameStart);
+    }
+
+    private void OnDisable()
+    {
+        EventHub.Instance.OnGameStart.RemoveListener(OnGameStart);
     }
 
     public override void OnNetworkSpawn()
@@ -44,17 +54,27 @@ public class PlayerController : NetworkBehaviour
             _input.enabled = false;
         }
 
+        EventHub.Instance.OnPlayerJoined.Invoke(this);
+
         SplineController vine = Instantiate(_vinePrefab);
         vine.VinePlayer = transform;
     }
 
     void Update()
     {
+        if (!_canMove) return;
+
+        SetupCamVector();
+
         if (Stats.Energy > 0)
         {
             transform.position += _moveDir * _speed * Time.deltaTime;
             _rb.position = transform.position;
-            Stats.Energy--;
+        }
+
+        if (_moveInput != Vector2.zero)
+        {
+            Stats.Energy -= Time.deltaTime;
         }
 
         Mathf.Clamp(Stats.Energy, 0, Stats.MaxEnergy);
@@ -90,6 +110,14 @@ public class PlayerController : NetworkBehaviour
         Stats.EnergyRecoverRate += _recoveryRateIncrementCurve.Evaluate(_sunlightSpotAmount);
     }
 
+    [Button]
+    private void OnGameStart()
+    {
+        StartCoroutine(EnergyGainCO());
+        SetupEnergy();
+        _canMove = true;
+    }
+
     private IEnumerator EnergyGainCO()
     {
         while (true)
@@ -98,6 +126,10 @@ public class PlayerController : NetworkBehaviour
             if (Stats.Energy < Stats.MaxEnergy)
                 Stats.Energy += Stats.EnergyRecoverRate;
         }
-        
+    }
+
+    public int GetInputId()
+    {
+        return _input.user.index;
     }
 }

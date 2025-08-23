@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,6 +6,7 @@ public class EventHub : MonoBehaviour
 {
     public static EventHub Instance;
 
+    [HideInInspector] public UnityEvent<PlayerController> OnPlayerJoined;
     [HideInInspector] public UnityEvent OnGameStart;
 
     void Awake()

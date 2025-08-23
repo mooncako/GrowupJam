@@ -38,10 +38,16 @@ public class SessionManager : MonoBehaviour
         {
             NetworkManager.Singleton.StartClient();
         }
+        if (Input.GetKey(KeyCode.Alpha2))
+        {
+            EventHub.Instance.OnGameStart.Invoke();
+        }
     }
 
     private void StartSession(ulong clientId)
     {
+        if (!NetworkManager.Singleton.IsServer) return;
+
         NetworkObject player = Instantiate(_playerPrefab, GetAvailableSpawnPoint().position, GetAvailableSpawnPoint().rotation).GetComponent<NetworkObject>();
 
         player.SpawnAsPlayerObject(clientId);
