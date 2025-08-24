@@ -21,6 +21,7 @@ public class ScoreManager : MonoBehaviour
 
     private void OnPlayerJoined(PlayerController player)
     {
+
         _scores[_currentIndex].gameObject.SetActive(true);
         _scores[_currentIndex].AssignOwner(player);
         _currentIndex++;

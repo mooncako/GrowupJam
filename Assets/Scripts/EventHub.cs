@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 using Unity.Netcode;
 using UnityEngine;
@@ -10,6 +11,10 @@ public class EventHub : MonoBehaviour
     [HideInInspector] public UnityEvent<PlayerController> OnPlayerJoined;
     [HideInInspector] public UnityEvent OnGameStart;
     [HideInInspector] public UnityEvent<PlayerController> OnPlayerVictory;
+    [HideInInspector] public UnityEvent OnHost;
+    [HideInInspector] public UnityEvent<string> OnJoinCodePublished;
+    [HideInInspector] public UnityEvent<string> OnConnect;
+    [HideInInspector] public UnityEvent OnPlayerReady;
 
     void Awake()
     {

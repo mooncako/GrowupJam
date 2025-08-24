@@ -7,6 +7,7 @@ using UnityEngine.Splines;
 public class SplineController : MonoBehaviour
 {
     [SerializeField, BoxGroup("References")] private SplineContainer _container;
+    [SerializeField, BoxGroup("References")] private SplineExtrude _extrude;
     [SerializeField, BoxGroup("References")] public Transform VinePlayer;
     [SerializeField, BoxGroup("Settings")] private float _distanceBeforeSplit = 2;
     [SerializeField, ReadOnly] private float3 _lastKnotSpawned = float3.zero;
@@ -15,6 +16,12 @@ public class SplineController : MonoBehaviour
     void OnValidate()
     {
         if (_container == null) _container = GetComponent<SplineContainer>();
+        if (_extrude == null) _extrude = GetComponent<SplineExtrude>();
+    }
+
+    void Start()
+    {
+        _extrude.Capped = true;
     }
 
     void Update()

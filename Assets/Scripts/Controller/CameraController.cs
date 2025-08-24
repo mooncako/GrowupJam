@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour
         if (player.IsOwner)
         {
             _cam.Target.TrackingTarget = player.transform;
-            _axisController.PlayerIndex = player.GetInputId();
+            _axisController.PlayerIndex = -1;
             _axisController.enabled = false;
         }
     }

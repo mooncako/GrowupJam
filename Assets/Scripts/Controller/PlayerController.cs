@@ -16,7 +16,11 @@ public class PlayerController : NetworkBehaviour
     [SerializeField, BoxGroup("Settings")] public Stats Stats;
     [SerializeField, BoxGroup("Settings")] private int _sunlightSpotAmount = 0;
     [SerializeField, BoxGroup("Settings")] private AnimationCurve _recoveryRateIncrementCurve;
-    [SerializeField, BoxGroup("Debug"), ReadOnly] private bool _canMove = false;
+    [SerializeField, BoxGroup("Debug"), ReadOnly]
+    private NetworkVariable<bool> _canMove = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    [SerializeField, BoxGroup("Debug"), ReadOnly]
+    public NetworkVariable<float> Energy = new(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [SerializeField, BoxGroup("Debug"), ReadOnly] private Vector2 _moveInput;
     [SerializeField, BoxGroup("Debug"), ReadOnly] private Vector3 _moveDir;
 
@@ -24,63 +28,72 @@ public class PlayerController : NetworkBehaviour
 
     private Vector3 _camForward;
     private Vector3 _camRight;
+    private bool _isReady;
 
-    private void OnValidate()
-    {
-        if (_rb == null) _rb = GetComponent<Rigidbody>();
-        if (_input == null) _input = GetComponent<PlayerInput>();
-    }
+    private Coroutine _energyCo;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        SetupEnergy();
-        StartCoroutine(EnergyGainCO());
+        base.OnNetworkSpawn();
+
+        // Only the owner should read local devices
+        _input.enabled = IsOwner;
+        if(IsOwner)
+            EventHub.Instance.OnPlayerJoined.Invoke(this);
+
+        var vine = Instantiate(_vinePrefab);
+        vine.VinePlayer = transform;
     }
 
     private void OnEnable()
     {
-        EventHub.Instance.OnGameStart.AddListener(OnGameStart);
+        EventHub.Instance.OnGameStart.AddListener(OnGameStart_ServerOnly);
         EventHub.Instance.OnPlayerVictory.AddListener(OnGameEnded);
     }
 
     private void OnDisable()
     {
-        EventHub.Instance.OnGameStart.RemoveListener(OnGameStart);
-        EventHub.Instance.OnPlayerVictory.AddListener(OnGameEnded);
+        EventHub.Instance.OnGameStart.RemoveListener(OnGameStart_ServerOnly);
+        EventHub.Instance.OnPlayerVictory.RemoveListener(OnGameEnded); // <-- fix
     }
 
-    public override void OnNetworkSpawn()
+    private void Start()
     {
-        base.OnNetworkSpawn();
-        if (!IsOwner)
-        {
-            _input.enabled = false;
-        }
-
-        EventHub.Instance.OnPlayerJoined.Invoke(this);
-
-        SplineController vine = Instantiate(_vinePrefab);
-        vine.VinePlayer = transform;
+        if(IsOwner)
+            SetupEnergy();
+        _energyCo = StartCoroutine(EnergyGainCO());
     }
 
     void Update()
     {
-        if (!_canMove) return;
+        if (!_canMove.Value) return;
 
         SetupCamVector();
 
-        if (Stats.Energy > 0)
+        if (Energy.Value > 0)
         {
-            transform.position += _moveDir * _speed * Time.deltaTime;
-            _rb.position = transform.position;
+            // only compute dir here; move in FixedUpdate
+            // (_moveDir is set in OnMove)
         }
 
-        if (_moveInput != Vector2.zero)
+        if (_moveInput != Vector2.zero && IsOwner)
         {
-            Stats.Energy -= Time.deltaTime;
+            Energy.Value = Mathf.Clamp(Energy.Value - Time.deltaTime, 0f, Stats.MaxEnergy);
         }
 
-        Mathf.Clamp(Stats.Energy, 0, Stats.MaxEnergy);
+
+        // <-- actually clamp it
+        
+    }
+
+    void FixedUpdate()
+    {
+        if (!_canMove.Value) return;
+        if (Energy.Value <= 0) return;
+
+        // Physics-friendly move
+        var targetPos = _rb.position + _moveDir * _speed * Time.fixedDeltaTime;
+        _rb.MovePosition(targetPos);
     }
 
     public void OnMove(InputValue value)
@@ -88,14 +101,33 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
 
         _moveInput = value.Get<Vector2>();
-
         _moveDir = _camForward * _moveInput.y + _camRight * _moveInput.x;
+    }
+
+    public void OnReady(InputValue value)
+    {
+        if (_isReady) return;
+
+        _isReady = true;
+        if (IsServer) // host or dedicated server
+            EventHub.Instance.OnPlayerReady.Invoke();
+        else
+            NotifyReadyServerRpc();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void NotifyReadyServerRpc()
+    {
+        EventHub.Instance.OnPlayerReady.Invoke();
     }
 
     private void SetupCamVector()
     {
-        _camForward = Camera.main.transform.up;
-        _camRight = Camera.main.transform.right;
+        var cam = Camera.main;
+        if (cam == null) return;
+
+        _camForward = cam.transform.up;
+        _camRight   = cam.transform.right;
         _camRight.y = 0;
         _camForward.Normalize();
         _camRight.Normalize();
@@ -103,28 +135,29 @@ public class PlayerController : NetworkBehaviour
 
     private void SetupEnergy()
     {
-        Stats.Energy = Stats.MaxEnergy;
+        Energy.Value = Stats.MaxEnergy; 
         Stats.EnergyRecoverRate = 0;
     }
+
 
     [Button]
     public void OnReceiveSunlight()
     {
         _sunlightSpotAmount++;
         Stats.EnergyRecoverRate = _recoveryRateIncrementCurve.Evaluate(_sunlightSpotAmount);
+        Energy.Value += 5;
     }
 
-    [Button]
-    private void OnGameStart()
+    // --- Gate movement from the server only ---
+    private void OnGameStart_ServerOnly()
     {
-        SetupEnergy();
-        _canMove = true;
+        if (IsServer) _canMove.Value = true; // server is the only writer
     }
 
     private void OnGameEnded(PlayerController player)
     {
-        _canMove = false;
-        StopCoroutine(EnergyGainCO());
+        if (IsServer) _canMove.Value = false; // server writes
+        if (_energyCo != null) { StopCoroutine(_energyCo); _energyCo = null; } // <-- fix
     }
 
     private IEnumerator EnergyGainCO()
@@ -132,13 +165,11 @@ public class PlayerController : NetworkBehaviour
         while (true)
         {
             yield return _waitForSeconds;
-            if (Stats.Energy < Stats.MaxEnergy)
-                Stats.Energy += Stats.EnergyRecoverRate;
+            if (!IsOwner) continue;
+            if (Energy.Value < Stats.MaxEnergy)
+                Energy.Value += Stats.EnergyRecoverRate;
         }
     }
 
-    public int GetInputId()
-    {
-        return _input.user.index;
-    }
+    public int GetInputId() => _input.user.index;
 }

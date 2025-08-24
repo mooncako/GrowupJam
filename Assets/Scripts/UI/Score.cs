@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Score : MonoBehaviour
@@ -16,7 +17,7 @@ public class Score : MonoBehaviour
     {
         if (Owner != null)
         {
-            _tmp.text = Mathf.RoundToInt(Owner.Stats.Energy).ToString();
+            _tmp.text = Mathf.RoundToInt(Owner.Energy.Value).ToString();
         }
     }
 
@@ -27,7 +28,8 @@ public class Score : MonoBehaviour
         if (owner.IsOwner)
         {
             _tmp.color = Color.green;
+            _tmp.text = Mathf.RoundToInt(Owner.Energy.Value).ToString();
         }
-        _tmp.text = Mathf.RoundToInt(Owner.Stats.Energy).ToString();
+        
     }
 }

@@ -2,8 +2,11 @@ using System;
 using PrimeTween;
 using Sirenix.OdinInspector;
 using TMPro;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ConnectButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -33,6 +36,8 @@ public class ConnectButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             _input.onValueChanged.AddListener(OnValueChanged);
         }
+
+        _button.onClick.AddListener(OnButtonClicked);
     }
 
     void OnDisable()
@@ -41,13 +46,25 @@ public class ConnectButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             _input.onValueChanged.RemoveListener(OnValueChanged);
         }
+
+        _button.onClick.RemoveListener(OnButtonClicked);
+
         _alphaTween.Stop();
         _shakeTween.Stop();
     }
 
+    private void OnButtonClicked()
+    {
+        if (_enabled)
+        {
+            // NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(_input.text, 7777);
+            EventHub.Instance.OnConnect.Invoke(_input.text);
+        }
+    }
+
     private void OnValueChanged(string input)
     {
-        if (!IPUtil.IsValidIPv4(input))
+        if (input.Length < 6)
         {
             _enabled = false;
             _alphaTween.Stop();
