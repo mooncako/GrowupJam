@@ -4979,8 +4979,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.7484276, g: 0.6048613, b: 0.6048613, a: 1}
+  m_Sprite: {fileID: 7482667652216324306, guid: db750325989564987a34393247d883b4, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5108,6 +5108,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 287519580}
   - {fileID: 920587826}
   - {fileID: 1013294681}
   - {fileID: 1167756950}
@@ -5120,4 +5121,3 @@ SceneRoots:
   - {fileID: 3642431582568319285}
   - {fileID: 697050638}
   - {fileID: 13570770}
-  - {fileID: 287519580}
