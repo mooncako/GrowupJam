@@ -56,8 +56,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _BorderSize: 0.08
-    - _CutoutSize: 0.75
-    - _DepthBias: 12.7
+    - _CutoutSize: 0.8
+    - _DepthBias: 9.79
     - _FalloffSize: 0.55
     - _QueueControl: 0
     - _QueueOffset: 0

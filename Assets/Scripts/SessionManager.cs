@@ -7,12 +7,14 @@ using Unity.Netcode.Transports.UTP;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 
 public class SessionManager : MonoBehaviour
 {
     [SerializeField, BoxGroup("References")] private GameObject _playerPrefab;
     [field: SerializeField, BoxGroup("References")] private Transform[] _spawnPositions = new Transform[4];
     [SerializeField, BoxGroup("References")] private SunlightOrbFactory _factory;
+    [SerializeField, BoxGroup("References")] private GameObject _cover;
     [SerializeField, BoxGroup("Setting")] private int _startingOrbNumber = 10;
     [SerializeField, BoxGroup("Debug"), ReadOnly] private List<Transform> _availableSpawnPoints = new List<Transform>();
     [SerializeField, BoxGroup("Debug"), ReadOnly] private List<PlayerController> _currentPlayerList = new List<PlayerController>();
@@ -84,6 +86,10 @@ public class SessionManager : MonoBehaviour
 
     private void StartSession(ulong clientId)
     {
+        if (_cover.activeSelf)
+        {
+            _cover.SetActive(false);
+        }
         if (!NetworkManager.Singleton.IsServer) return;
         if (!_orbSpawned)
         {
