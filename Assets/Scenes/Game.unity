@@ -447,7 +447,6 @@ GameObject:
   - component: {fileID: 332696563}
   - component: {fileID: 332696566}
   - component: {fileID: 332696565}
-  - component: {fileID: 332696564}
   m_Layer: 5
   m_Name: RoomCode (1)
   m_TagString: Untagged
@@ -474,19 +473,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -101}
   m_SizeDelta: {x: 316.1104, y: 100}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &332696564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332696562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e7f4df86ca7e184e9b4faa096fc9c29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tmp: {fileID: 332696565}
 --- !u!114 &332696565
 MonoBehaviour:
   m_ObjectHideFlags: 0

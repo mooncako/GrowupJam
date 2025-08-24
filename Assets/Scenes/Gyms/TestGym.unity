@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &227946498 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400753892894353672, guid: 4d70fce08154a184893f3dc8c81b51fd, type: 3}
-  m_PrefabInstance: {fileID: 2581214217875098534}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1144750267
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,6 +240,71 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1001 &1609255403
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1777582337460896594, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_Name
+      value: VinePlayer (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2296403786665056166, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3439801157
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545170690793663095, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888025343861099059, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888025343861099059, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888025343861099059, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888025343861099059, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888025343861099059, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888025343861099059, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888025343861099059, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888025343861099059, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888025343861099059, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888025343861099059, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b996d4d261bbb39449fbb2c69858954b, type: 3}
 --- !u!1 &1743623591
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,7 +344,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 227946498}
+    TrackingTarget: {fileID: 0}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -617,3 +677,4 @@ SceneRoots:
   - {fileID: 1144750269}
   - {fileID: 2581214217875098534}
   - {fileID: 1743623593}
+  - {fileID: 1609255403}

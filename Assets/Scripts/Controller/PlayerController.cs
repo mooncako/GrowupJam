@@ -5,6 +5,7 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(PlayerInput))]
@@ -14,6 +15,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField, BoxGroup("References")] private PlayerInput _input;
     [SerializeField, BoxGroup("References")] private SplineController _vinePrefab;
     [SerializeField, BoxGroup("References")] private AudioSource _sunCollectSFX;
+    [SerializeField, BoxGroup("References")] private VisualEffect _headVfx;
     [SerializeField, BoxGroup("Settings")] private float _speed = .2f;
     [SerializeField, BoxGroup("Settings")] public Stats Stats;
     [SerializeField, BoxGroup("Settings")] private int _sunlightSpotAmount = 0;
@@ -48,6 +50,11 @@ public class PlayerController : NetworkBehaviour
         vine.VinePlayer = transform;
     }
 
+    void OnValidate()
+    {
+        if (_headVfx == null) _headVfx = GetComponentInChildren<VisualEffect>();
+    }
+
     private void OnEnable()
     {
         EventHub.Instance.OnGameStart.AddListener(OnGameStart_ServerOnly);
@@ -62,8 +69,13 @@ public class PlayerController : NetworkBehaviour
 
     private void Start()
     {
-        if(IsOwner)
+        if (IsOwner)
+        {
             SetupEnergy();
+            Color color = UnityEngine.Random.ColorHSV(0f, 1f, .5f, 1f, .5f, 1f) * 500;
+            _headVfx.SetVector4("HeadColor", new Vector4(color.r, color.g, color.b, color.a));
+        }
+            
         _energyCo = StartCoroutine(EnergyGainCO());
     }
 
