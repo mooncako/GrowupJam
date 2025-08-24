@@ -197,7 +197,7 @@ MonoBehaviour:
   _speed: 0.2
   Stats:
     <MaxEnergy>k__BackingField: 10
-    EnergyRecoverRate: 0
+    EnergyRecoverRate: 0.1
   _sunlightSpotAmount: 0
   _recoveryRateIncrementCurve:
     serializedVersion: 2
