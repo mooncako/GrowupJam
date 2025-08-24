@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Sirenix.OdinInspector;
 using Unity.Netcode;
@@ -23,6 +24,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField, BoxGroup("Debug"), ReadOnly]
     public NetworkVariable<float> Energy = new(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [SerializeField, BoxGroup("Debug"), ReadOnly] private Vector2 _moveInput;
+    [SerializeField, BoxGroup("Debug"), ReadOnly] private float _upwardInput;
     [SerializeField, BoxGroup("Debug"), ReadOnly] private Vector3 _moveDir;
 
     private WaitForSeconds _waitForSeconds = new WaitForSeconds(1);
@@ -93,6 +95,7 @@ public class PlayerController : NetworkBehaviour
         if (Energy.Value <= 0) return;
 
         // Physics-friendly move
+        _moveDir = new Vector3(_moveDir.x, _upwardInput, _moveDir.z);
         var targetPos = _rb.position + _moveDir * _speed * Time.fixedDeltaTime;
         _rb.MovePosition(targetPos);
     }
@@ -116,6 +119,12 @@ public class PlayerController : NetworkBehaviour
             NotifyReadyServerRpc();
     }
 
+    public void OnJump(InputValue value)
+    {
+        if (!IsOwner) return;
+        _upwardInput = value.Get<Vector2>().y;
+    }
+
     [ServerRpc(RequireOwnership = false)]
     private void NotifyReadyServerRpc()
     {
@@ -127,8 +136,9 @@ public class PlayerController : NetworkBehaviour
         var cam = Camera.main;
         if (cam == null) return;
 
-        _camForward = cam.transform.up;
+        _camForward = cam.transform.forward;
         _camRight   = cam.transform.right;
+        _camForward.y = 0;
         _camRight.y = 0;
         _camForward.Normalize();
         _camRight.Normalize();
