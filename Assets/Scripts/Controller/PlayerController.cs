@@ -12,6 +12,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField, BoxGroup("References")] private Rigidbody _rb;
     [SerializeField, BoxGroup("References")] private PlayerInput _input;
     [SerializeField, BoxGroup("References")] private SplineController _vinePrefab;
+    [SerializeField, BoxGroup("References")] private AudioSource _sunCollectSFX;
     [SerializeField, BoxGroup("Settings")] private float _speed = .2f;
     [SerializeField, BoxGroup("Settings")] public Stats Stats;
     [SerializeField, BoxGroup("Settings")] private int _sunlightSpotAmount = 0;
@@ -143,6 +144,10 @@ public class PlayerController : NetworkBehaviour
     [Button]
     public void OnReceiveSunlight()
     {
+        if (IsOwner)
+        {
+            _sunCollectSFX.Play();
+        }
         _sunlightSpotAmount++;
         Stats.EnergyRecoverRate = _recoveryRateIncrementCurve.Evaluate(_sunlightSpotAmount);
         Energy.Value += 5;
