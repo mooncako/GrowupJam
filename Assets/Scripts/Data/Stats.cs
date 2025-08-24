@@ -6,6 +6,6 @@ using UnityEngine;
 [Serializable]
 public class Stats
 {
-    [field: SerializeField, Range(50, 100)] public float MaxEnergy { get; private set; } = 100;
+    [field: SerializeField, Range(10, 100)] public float MaxEnergy { get; private set; } = 100;
     public float EnergyRecoverRate = 0;
 }
