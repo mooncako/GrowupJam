@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,6 +9,7 @@ public class EventHub : MonoBehaviour
 
     [HideInInspector] public UnityEvent<PlayerController> OnPlayerJoined;
     [HideInInspector] public UnityEvent OnGameStart;
+    [HideInInspector] public UnityEvent<PlayerController> OnPlayerVictory;
 
     void Awake()
     {
@@ -19,5 +21,11 @@ public class EventHub : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    [Button]
+    private void TestVictory(PlayerController player)
+    {
+        OnPlayerVictory.Invoke(player);
     }
 }

@@ -1,8 +1,7 @@
 using Sirenix.OdinInspector;
-using Unity.Netcode;
 using UnityEngine;
 
-public class SunlightOrb : NetworkBehaviour
+public class VictoryTrigger : MonoBehaviour
 {
     [SerializeField, BoxGroup("Settings")] private LayerMask _playerMask;
 
@@ -10,8 +9,7 @@ public class SunlightOrb : NetworkBehaviour
     {
         if ((_playerMask.value & (1 << other.gameObject.layer)) != 0)
         {
-            other.GetComponent<PlayerController>().OnReceiveSunlight();
-            Destroy(gameObject);
+            EventHub.Instance.OnPlayerVictory.Invoke(other.GetComponent<PlayerController>());
         }
     }
 }

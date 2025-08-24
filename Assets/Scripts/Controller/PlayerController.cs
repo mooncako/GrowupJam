@@ -40,11 +40,13 @@ public class PlayerController : NetworkBehaviour
     private void OnEnable()
     {
         EventHub.Instance.OnGameStart.AddListener(OnGameStart);
+        EventHub.Instance.OnPlayerVictory.AddListener(OnGameEnded);
     }
 
     private void OnDisable()
     {
         EventHub.Instance.OnGameStart.RemoveListener(OnGameStart);
+        EventHub.Instance.OnPlayerVictory.AddListener(OnGameEnded);
     }
 
     public override void OnNetworkSpawn()
@@ -117,6 +119,12 @@ public class PlayerController : NetworkBehaviour
     {
         SetupEnergy();
         _canMove = true;
+    }
+
+    private void OnGameEnded(PlayerController player)
+    {
+        _canMove = false;
+        StopCoroutine(EnergyGainCO());
     }
 
     private IEnumerator EnergyGainCO()
