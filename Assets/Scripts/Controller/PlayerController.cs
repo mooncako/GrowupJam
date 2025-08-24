@@ -171,5 +171,10 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    public bool IsGamePad()
+    {
+        return _input.currentControlScheme == "Gamepad";
+    }
+
     public int GetInputId() => _input.user.index;
 }

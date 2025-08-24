@@ -36,6 +36,10 @@ public class SplineController : MonoBehaviour
         else
         {
             _container.Spline[^1] = knot;
+            if (_container.Spline.Count >= 10)
+            {
+                _container.Spline.RemoveAt(1);
+            }
         }
         
     }

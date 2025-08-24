@@ -9,6 +9,8 @@ public class CameraController : MonoBehaviour
     [SerializeField, BoxGroup("References")] private CinemachineCamera _cam;
     [SerializeField, BoxGroup("References")] private CinemachineInputAxisController _axisController;
 
+    private PlayerController _owner;
+
     void OnValidate()
     {
         if (_cam == null) _cam = GetComponent<CinemachineCamera>();
@@ -27,15 +29,23 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (_owner == null) return;
+        
+        if (_owner.IsGamePad())
         {
             _axisController.enabled = true;
         }
-        else if (Input.GetMouseButtonUp(1))
+        else
         {
-            _axisController.enabled = false;
+            if (Input.GetMouseButtonDown(1))
+            {
+                _axisController.enabled = true;
+            }
+            else if (Input.GetMouseButtonUp(1))
+            {
+                _axisController.enabled = false;
+            }
         }
-        
 
     }
 
@@ -45,6 +55,7 @@ public class CameraController : MonoBehaviour
         {
             _cam.Target.TrackingTarget = player.transform;
             _axisController.PlayerIndex = -1;
+            _owner = player;
             _axisController.enabled = false;
         }
     }
