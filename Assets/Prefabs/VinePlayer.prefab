@@ -196,7 +196,7 @@ MonoBehaviour:
   _headVfx: {fileID: 1547631943613748158}
   _speed: 0.2
   Stats:
-    <MaxEnergy>k__BackingField: 10
+    <MaxEnergy>k__BackingField: 20
     EnergyRecoverRate: 0.1
   _sunlightSpotAmount: 0
   _recoveryRateIncrementCurve:
