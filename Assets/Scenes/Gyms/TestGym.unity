@@ -240,6 +240,67 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1001 &1193510432
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1698431894099666514, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698431894099666514, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698431894099666514, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698431894099666514, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698431894099666514, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698431894099666514, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698431894099666514, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698431894099666514, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698431894099666514, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698431894099666514, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3634363690401554989, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: m_Name
+      value: SunlightOrb
+      objectReference: {fileID: 0}
+    - target: {fileID: 4735704062576401947, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1322987049
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cd940325da2e7cb4ab3a2fedde9ac0e1, type: 3}
 --- !u!1001 &1609255403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -678,3 +739,4 @@ SceneRoots:
   - {fileID: 2581214217875098534}
   - {fileID: 1743623593}
   - {fileID: 1609255403}
+  - {fileID: 1193510432}
