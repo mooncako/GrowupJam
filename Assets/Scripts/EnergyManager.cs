@@ -2,9 +2,9 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class ScoreManager : MonoBehaviour
+public class EnergyManager : MonoBehaviour
 {
-    [SerializeField, BoxGroup("References")] private Score[] _scores = new Score[4];
+    [SerializeField, BoxGroup("References")] private Energy[] _scores = new Energy[4];
 
     private int _currentIndex = 0;
 
